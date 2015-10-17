@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<link rel="stylesheet" href="styles.css">
+		<script src="scripts.js"></script>
+		<title>Light Alarm Clock</title>
+	</head>
+	<body>
+		<a id="heading" href="index.html">Alarm times</a>
+		<table id="alarmlist"></table>
+		<div id="addtime">
+			<select id="dow">
+				<option value="1">Monday</option>
+				<option value="2">Tuesday</option>
+				<option value="3">Wednesday</option>
+				<option value="4">Thursday</option>
+				<option value="5">Friday</option>
+				<option value="6">Saturday</option>
+				<option value="7">Sunday</option>
+			</select>
+			<input type="number" placeholder="Hours" id="hours"> : <input type="number" placeholder="Minutes" id="minutes">
+			<input type="button" value="Add" id="add">
+		</div>
+	</body>
+</html>

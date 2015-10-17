@@ -1,0 +1,167 @@
+body {
+	background:#333;
+	font-family:Ubuntu, Helvetica, Arial;
+}
+
+#heading {
+	color:#fff;
+	font-size:9vw;
+	text-align:center;
+	display:block;
+	margin-bottom:4vw;
+	text-decoration:none;
+}
+
+.menuoption {
+	box-shadow:rgba(0, 0, 0, 0.2) 0px 0px 8px 0px inset;
+	font-size:10vw;
+	display:block;
+	color:#fff;
+	text-align:center;
+	width:80vw;
+	margin:0 auto;
+	padding:20vw 0;
+	border-radius:3px;
+	text-decoration:none;
+	margin-top:10vw;
+	background-color:#223;
+}
+
+#intensitybuttons {
+	background:#000;
+	width:70vw;
+	margin:0 auto;
+	margin-bottom:10vw;
+	border:2px solid #fff;
+}
+
+#intensitybuttons input[type="button"] {
+	width:100%;
+	background:transparent;
+	border:none;
+	font-size:9vw;
+	padding:2vw;
+	color:#fff;
+}
+
+#alarmlist {
+	font-size:6vw;
+	color:#fff;
+	border:2px solid #ccc;
+	padding:4vw;
+	margin:0 auto;
+	border-collapse:collapse;
+}
+
+#alarmlist .alarm_id {
+	color:#777;
+}
+
+#alarmlist .empty {
+	background:transparent !important;
+	font-style:italic;
+}
+
+#alarmlist .empty th {
+	padding:4vw 10vw;
+}
+
+#alarmlist tr:nth-child(odd) {
+	background:rgba(0, 150, 255, 0.4);
+}
+
+#alarmlist tr:nth-child(even) {
+	background:rgba(0, 150, 255, 0.2);
+}
+
+#alarmlist .alarm_time {
+	padding:5vw 4vw;
+}
+
+#alarmlist td {
+	padding:0 4vw;
+}
+
+#alarmlist .alarm_delete {
+	font-size:15vw;
+	line-height:10vw;
+	padding:0vw;
+	cursor:pointer;
+}
+
+#alarmlist .alarm_delete:hover {
+	color:#f00;
+}
+
+#addtime {
+	width:70vw;
+	margin:0 auto;
+	margin-top:5vw;
+	margin-bottom:10vw;
+	font-size:5vw;
+	color:#fff;
+	text-align:center;
+	background:#222;
+	padding:5vw;
+	box-shadow:rgba(0, 0, 0, 0.2) 0px 0px 8px 0px inset;
+	border-radius:3px;
+}
+
+#addtime #dow {
+	width:100%;
+	padding:3vw;
+	font-size:6vw;
+	background:transparent;
+	border:none;
+	color:#fff;
+	text-align:center;
+	border:1px solid #fff;
+	border-radius:3px;
+	margin-bottom:3vw;
+}
+
+#addtime #hours, #addtime #minutes {
+	-moz-appearance:textfield;
+	font-size:5.5vw;
+	text-align:center;
+	width:37.5%;
+	background:transparent;
+	color:#fff;
+	margin-bottom:3vw;
+	border:1px solid #ccc;
+	border-radius:3px;
+	padding:3vw;
+}
+
+#addtime #hours:focus, #addtime #minutes:focus {
+	background:rgba(255, 255, 255, 0.1);
+}
+
+#addtime #add {
+	width:100%;
+	background:transparent;
+	color:#fff;
+	border:none;
+	font-size:5vw;
+	border:1px solid #fff;
+	border-radius:3px;
+	padding:4vw;
+	cursor:pointer;
+}
+
+#addtime #add:hover {
+	background:#f52;
+	border-color:#f52;
+}
+
+input::-webkit-outer-spin-button {
+	-webkit-appearance:none;
+	margin:0;
+}
+
+
+
+
+
+
+

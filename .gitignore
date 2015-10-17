@@ -1,0 +1,7 @@
+*~
+/obj
+/build
+/libesphttpd/*.a
+/libesphttpd/obj
+/libesphttpd/espfs/mkespfsimage/main.o
+/libesphttpd/espfs/mkespfsimage/mkespfsimage
