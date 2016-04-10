@@ -20,12 +20,12 @@ OBJS			:= $(addprefix $(OBJDIR)/,$(notdir $(SRCS:.c=.o)))
 DEPS			:= $(addprefix $(OBJDIR),$(notdir $(SRCS:.c=.d)))
 
 # SDK / Compiler settings
-SDK_DIR			:= /opt/esp-open-sdk/esp_iot_sdk_v1.4.0
+SDK_DIR			:= /opt/esp-open-sdk/esp_iot_sdk_v1.5.0
 CC				:= xtensa-lx106-elf-gcc
 LD				:= xtensa-lx106-elf-gcc
 ESPTOOL			:= esptool.py
 CFLAGS			:= -O2 -fdata-sections -ffunction-sections -Wpointer-arith -Wall -Wno-implicit-function-declaration -fno-inline-functions -nostdlib -mlongcalls -mtext-section-literals -DICACHE_FLASH
-LDLIBS			:= -nostdlib -Wl,--gc-sections -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,--start-group -lwebpages-espfs -lc -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -llwip -lesphttpd $(OBJS) -Wl,--end-group
+LDLIBS			:= -nostdlib -Wl,--gc-sections -Wl,--no-check-sections -u call_user_start -Wl,-static -Wl,--start-group -lwebpages-espfs -lc -lgcc -lhal -lphy -lpp -lnet80211 -lwpa -lmain -llwip -lcrypto -lesphttpd $(OBJS) -Wl,--end-group
 LDFLAGS			:= -O2 -T$(SDK_DIR)/ld/eagle.app.v6.ld
 INCLUDES		:= -I $(SDK_DIR)/include -I $(SDK_DIR)/include/json -I $(LIBESPHTTPD_DIR)/include -I $(SRCDIR)/
 

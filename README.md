@@ -28,7 +28,7 @@ Includes a KiCad schematic at `hardware/schematic.sch`.
 * If you want to change the light dimming behaviour when an alarm occurs, edit the following defines in `src/user_config.h`: `ALARM_HOLD_DURATION` (time that the light stays on at full brightness after dimming up), `ALARM_DIM_DURATION` (time that dimming up takes), `ALARM_DIM_INTERVAL` (interval in which the clock checks whether increasing the light intensity is necessary when dimming up), `ALARM_DIM_START` (intensity at which dimming starts, then linear interpolation until `ALARM_DIM_STOP` is used), `ALARM_DIM_STOP` (intensity at which dimming ends, then jumps to `ALARM_DIM_FINAL` intensity and holds it), `ALARM_DIM_FINAL` (intensity that is held for `ALARM_HOLD_DURATION` seconds)
 
 ### Compilation
-In order to compile esp8266-light-alarmclock, you need a fully set up [https://github.com/pfalcon/esp-open-sdk](esp-open-sdk), tested with Espressif's IOT SDK version 1.4.
+In order to compile esp8266-light-alarmclock, you need a fully set up [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk), tested with Espressif's IoT SDK version 1.4 and version 1.5.
 
 You have to set your WiFi SSID and passphrase at compile time. In order to do that, execute
 ```bash
