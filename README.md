@@ -32,7 +32,7 @@ In order to compile esp8266-light-alarmclock, you need a fully set up [esp-open-
 
 You have to set your WiFi SSID and passphrase at compile time. In order to do that, execute
 ```bash
-make flash WIFI_PASS="YOUR_PASSPHRASE" WIFI_SSID="YOUR_SSID"
+make WIFI_PASS="YOUR_PASSPHRASE" WIFI_SSID="YOUR_SSID"
 ```
 You can then proceed to flash the image to your ESP8266 with `make flash`.
 
