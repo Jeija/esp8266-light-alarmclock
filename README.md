@@ -33,7 +33,7 @@ git clone --recursive https://github.com/Jeija/esp8266-light-alarmclock
 * If you want to change the light dimming behaviour when an alarm occurs, edit the following defines in `src/user_config.h`: `ALARM_HOLD_DURATION` (time that the light stays on at full brightness after dimming up), `ALARM_DIM_DURATION` (time that dimming up takes), `ALARM_DIM_INTERVAL` (interval in which the clock checks whether increasing the light intensity is necessary when dimming up), `ALARM_DIM_START` (intensity at which dimming starts, then linear interpolation until `ALARM_DIM_STOP` is used), `ALARM_DIM_STOP` (intensity at which dimming ends, then jumps to `ALARM_DIM_FINAL` intensity and holds it), `ALARM_DIM_FINAL` (intensity that is held for `ALARM_HOLD_DURATION` seconds)
 
 ### Compilation
-In order to compile esp8266-light-alarmclock, you need a fully set up [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk), tested with Espressif's IoT SDK version 1.4 and version 1.5.
+In order to compile esp8266-light-alarmclock, you need a fully set up [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk), tested with Espressif's IoT SDK version 2.0. Make sure the Xtensa binaries are in your `PATH` variable and edit the Makefile so that it contains the correct `SDK_DIR` as well as your serial port configuration and flash chip properties.
 
 You have to set your WiFi SSID and passphrase at compile time. In order to do that, execute
 ```bash
@@ -45,7 +45,7 @@ You can then proceed to flash the image to your ESP8266 with `make flash`.
 * The software acts as an HTTP server. You can access the alarm clock's site at its IP, Port 80. There you can manually set the light intensity or add and remove (up to 21) alarm times. The website is optimized for mobile browsers.
 * The software also contains an HTTP client that connects up to [http://www.timeapi.org](http://www.timeapi.org) to retrieve the current time in your timezone. But even if your network connection happens to fail sometimes, the internal clock will keep going. This could potentially be replaced with NTP.
 * Alarm times that are set on the webpage are saved to RAM and Flash so that even after a power failure the clock will remember when to wake you up.
-* Shortly after the alarm times, the light will slowly dim up. If, however, you manually set the light's brightness manually, this will override the dimming process.
+* Shortly after the alarm times, the light will slowly dim up. If, however, you set the light's brightness manually, this will override the dimming process.
 
 ## Attribution
 * Compile using pfalcon's [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk)
