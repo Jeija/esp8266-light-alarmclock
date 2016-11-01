@@ -1,4 +1,4 @@
-#define BAUD 1000000
+#define BAUD 921600
 
 // PWM requires microsecond timing
 #define USE_US_TIMER
@@ -18,12 +18,12 @@
 #define WAKETIMES_MAX 21
 
 // Alarm / wakeup light dimming configuration (in seconds or %)
-#define ALARM_HOLD_DURATION	120	// seconds
+#define ALARM_HOLD_DURATION 120	// seconds
 #define ALARM_DIM_DURATION 240	// seconds
 #define ALARM_DIM_INTERVAL 3	// seconds
-#define ALARM_DIM_START 11		// %
-#define ALARM_DIM_STOP 50		// %
-#define ALARM_DIM_FINAL 100		// %
+#define ALARM_DIM_START 11	// %
+#define ALARM_DIM_STOP 50	// %
+#define ALARM_DIM_FINAL 100	// %
 
 // Network configuration, comment this section out for DHCP
 #define USE_STATIC

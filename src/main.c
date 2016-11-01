@@ -2,11 +2,7 @@
 #include "user_config.h"
 
 // System
-#include "ets_sys.h"
-#include "osapi.h"
-#include "gpio.h"
-#include "os_type.h"
-#include "user_interface.h"
+#include <esp8266.h>
 
 // Libesphttpd
 #include "webpages-espfs.h"
@@ -76,7 +72,7 @@ uint32_t ICACHE_FLASH_ATTR string_to_ip(char *ipstring) {
 // Read waketimes from flash, make sure flash stores valid waketimes
 void ICACHE_FLASH_ATTR read_alarmflash(void) {
 	char magic[4];
-	uint8_t res = spi_flash_read(ALARM_FLASH_OFFSET, (uint32 *)&magic, 4);
+	spi_flash_read(ALARM_FLASH_OFFSET, (uint32 *)&magic, 4);
 	if (magic[0] == ALARM_FLASH_MAGIC[0] && magic[1] == ALARM_FLASH_MAGIC[1]
 			&& magic[2] == ALARM_FLASH_MAGIC[2] && magic[3] == ALARM_FLASH_MAGIC[3]) {
 		spi_flash_read(ALARM_FLASH_OFFSET + 4, (uint32 *)&waketimes, WAKETIMES_MAX * 4);
@@ -211,6 +207,12 @@ uint8_t ICACHE_FLASH_ATTR pwm_getintensity(void) {
 /**
  * HTTP Server functions
  */
+inline void http_respond(HttpdConnData *conn, int code, char *msg) {
+	httpdStartResponse(conn, code);
+	httpdEndHeaders(conn);
+	httpdSend(conn, msg, -1);
+}
+
 int ICACHE_FLASH_ATTR cmd_intensity_set(HttpdConnData *conn) {
 	// Parse command from GET parameters
 	char intensity_str[4];
@@ -220,19 +222,19 @@ int ICACHE_FLASH_ATTR cmd_intensity_set(HttpdConnData *conn) {
 
 	manual_override = (intensity != 0);
 
-	httpdSend(conn, "ok", -1);
+	http_respond(conn, 200, "ok");
 	return HTTPD_CGI_DONE;
 }
 
 int ICACHE_FLASH_ATTR cmd_intensity_get(HttpdConnData *conn) {
 	char answer[4];
 	os_sprintf(answer, "%d", pwm_getintensity());
-	httpdSend(conn, answer, -1);
+	http_respond(conn, 200, answer);
 
 	return HTTPD_CGI_DONE;
 }
 
-int ICACHE_FLASH_ATTR cmd_waketimes_get(HttpdConnData *connData) {
+int ICACHE_FLASH_ATTR cmd_waketimes_get(HttpdConnData *conn) {
 	char buf[1024];
 	char section[50];
 
@@ -251,7 +253,7 @@ int ICACHE_FLASH_ATTR cmd_waketimes_get(HttpdConnData *connData) {
 	}
 	strcat(buf, "]");
 
-	httpdSend(connData, buf, -1);
+	http_respond(conn, 200, buf);
 
 	return HTTPD_CGI_DONE;
 }
@@ -263,9 +265,9 @@ int ICACHE_FLASH_ATTR cmd_waketime_del(HttpdConnData *conn) {
 
 	if (id < WAKETIMES_MAX) {
 		waketimes[id].enabled = FALSE;
-		httpdSend(conn, "ok", -1);
+		http_respond(conn, 200, "ok");
 	} else {
-		httpdSend(conn, "error: invalid id", -1);
+		http_respond(conn, 400, "error: invalid id");
 	}
 
 	write_alarmflash();
@@ -287,7 +289,7 @@ int ICACHE_FLASH_ATTR cmd_waketime_add(HttpdConnData *conn) {
 	uint8_t min = atoi(min_str);
 
 	if (dow > 7 || hrs > 24 || min > 59) {
-		httpdSend(conn, "error: invalid data", -1);
+		http_respond(conn, 400, "error: invalid data");
 	} else {
 		// Look for an empty waketime slot
 		uint8_t i;
@@ -297,14 +299,14 @@ int ICACHE_FLASH_ATTR cmd_waketime_add(HttpdConnData *conn) {
 				waketimes[i].hours = hrs;
 				waketimes[i].minutes = min;
 				waketimes[i].enabled = TRUE;
-				httpdSend(conn, "ok", -1);
+				http_respond(conn, 200, "ok");
 				write_alarmflash();
 				return HTTPD_CGI_DONE;
 			}
 		}
 
 		// No empty slot found
-		httpdSend(conn, "error: no more empty slots", -1);
+		http_respond(conn, 500, "error: no more empty slots");
 	}
 
 	return HTTPD_CGI_DONE;
@@ -338,10 +340,10 @@ void ICACHE_FLASH_ATTR user_init(void)
 	char pass[64] = WIFI_PASS;
 	struct station_config sta_conf;
 	sta_conf.bssid_set = 0;   
-    os_memcpy(&sta_conf.ssid, ssid, 32);
-    os_memcpy(&sta_conf.password, pass, 64);
+	os_memcpy(&sta_conf.ssid, ssid, 32);
+	os_memcpy(&sta_conf.password, pass, 64);
 
-    wifi_station_set_config(&sta_conf);
+	wifi_station_set_config(&sta_conf);
 	wifi_station_connect();
 
 	/*** Network configuration ***/

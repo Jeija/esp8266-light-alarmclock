@@ -14,6 +14,11 @@ Includes a KiCad schematic at `hardware/schematic.sch`.
 ![Set brightness page](/screenshots/setbrightness.png?raw=true)
 ![Set alarm times page](/screenshots/alarmtimes.png?raw=true)
 
+Please make sure to clone using `--recursive` (in order to download the libesphttpd submodule):
+```bash
+git clone --recursive https://github.com/Jeija/esp8266-light-alarmclock
+```
+
 ### Configuration
 * You can either set a static IP Address or tell the clock to use DHCP. In order to use a dynamic address, comment out `#define USE_STATIC` in `src/user_config.h`. Otherwise, adapt these values in `src/user_config.h` to your network:
 
