@@ -8,10 +8,11 @@
 #define PWM_RESOLUTION 100
 
 // Timezone configuration, UPDATE_SYSTIME_INTERVAL in seconds
-#define TIMEZONE "cet"
+#define TIMEZONE "Europe/Berlin"
+#define TIMEZONEDB_URL "http://api.timezonedb.com/v2/get-time-zone?key=" TIMEZONEDB_KEY "&format=json&by=zone&fields=formatted&zone=" TIMEZONE
+#define TIMEZONEDB_FIELD "\"formatted\""
 #define UPDATE_SYSTIME_MININTERVAL 5
 #define UPDATE_SYSTIME_MAXSKIP 50
-#define TIMEAPI_URL "http://www.timeapi.org/" TIMEZONE "?ESP%20\\u%20\\H%20\\M%20\\S"
 
 // Make sure waketimes doesn't overflow the response buffer of "waketimes_get"
 // 3 alarms per weekday are propably more than enough
@@ -40,3 +41,4 @@
 #define ALARM_FLASH_MAGIC "ALRM"
 
 // Make sure to set your Wi-Fi network and passwort on the make command line (WIFI_SSID, WIFI_PASS)!
+// Also make sure to provide a timezonedb API key when compiling!

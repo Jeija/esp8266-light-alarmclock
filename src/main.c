@@ -85,6 +85,19 @@ void ICACHE_FLASH_ATTR write_alarmflash(void) {
 	spi_flash_write(ALARM_FLASH_OFFSET + 4, (uint32 *)&waketimes, WAKETIMES_MAX * 4);
 }
 
+// Based on http://stackoverflow.com/questions/6054016/c-program-to-find-day-of-week-given-date
+// Convert date to day of week from Monday (1) to Sunday (7)
+uint8_t ICACHE_FLASH_ATTR date2dow(uint16_t year, uint16_t month, uint16_t day) {
+	uint32_t JND = day
+		+ ((153 * (month + 12 * ((14 - month) / 12) - 3) + 2) / 5)
+		+ (365 * (year + 4800 - ((14 - month) / 12)))
+		+ ((year + 4800 - ((14 - month) / 12)) / 4)
+		- ((year + 4800 - ((14 - month) / 12)) / 100)
+		+ ((year + 4800 - ((14 - month) / 12)) / 400)
+		- 32045;
+	return JND % 7 + 1;
+}
+
 /**
  * Systime update callbacks
  */
@@ -92,23 +105,43 @@ void ICACHE_FLASH_ATTR http_callback_time(char *res, int status, char *res_full)
 {
 	if (status == HTTP_STATUS_GENERIC_ERROR) return;
 
-	// Send "ESP" string in request to make sure the API actually answered the request
-	if (res[0] == 'E' && res[1] == 'S' && res[2] == 'P') {
-		// Got valid answer
-		systime_correct = true;
+	// Frugal "JSON" parser: We only want to get the contents of the "formatted" field,
+	// so we don't need the full-blown JSON decoder from the IoT SDK here.
+	char *start = os_strstr(res, TIMEZONEDB_FIELD);
 
-		// Split res by inserting NUL-termination characters between numbers
-		uint8_t i = 0;
-		while (res[i] != 0x00) {
-			if (res[i] == ' ') res[i] = 0x00;
-			i++;
-		}
-
-		systime.dow = atoi(res + 4);
-		systime.hours = atoi(res + 6);
-		systime.minutes = atoi(res + 9);
-		systime.seconds = atoi(res + 12);
+	// TIMEZONEDB_FIELD not in response: Failed to retrieve a valid JSON from the timezonedb server, ignore
+	if (start == NULL) {
+		os_printf("Failed to retrieve valid data from timezonedb, got %s\r\n", res);
+		return;
 	}
+
+	// The JSON should contain an entry that looks like TIMEZONEDB_FIELD : "2017-01-01 00:00:00"
+	// `start` currently points to where the TIMEZONEDB_FIELD string begins
+	// Increment `timestr` until it points to the first character of the time string.
+	char *timestr = start + os_strlen(TIMEZONEDB_FIELD);
+	while (*timestr != ':') timestr++;
+	while (*timestr != '"') timestr++;
+	timestr++;
+
+	// Insert 0x00 string terminators into the ISO time and convert hour, minute, second string to numbers
+	uint8_t i = 0;
+	while (timestr[i] != 0x00) {
+		if (timestr[i] == ' ' || timestr[i] == '-' || timestr[i] == ':') timestr[i] = 0x00;
+		i++;
+	}
+
+	systime.hours = atoi(timestr + 11);
+	systime.minutes = atoi(timestr + 14);
+	systime.seconds = atoi(timestr + 17);
+
+	uint16_t year = atoi(timestr);
+	uint16_t month = atoi(timestr + 5);
+	uint16_t day = atoi(timestr + 8);
+
+	systime.dow = date2dow(year, month, day);
+	systime_correct = true;
+
+	os_printf("Retrieved time: %d-%d-%d %d:%d:%d, day of week %d\r\n", year, month, day, systime.hours, systime.minutes, systime.seconds, systime.dow);
 }
 
 /**
@@ -144,7 +177,7 @@ void ICACHE_FLASH_ATTR update_systime_timer_cb(void) {
 	// Skip systime update up to UPDATE_SYSTIME_MAXSKIP times if time is already correct
 	if (systime_correct && ++update_systime_skip < UPDATE_SYSTIME_MAXSKIP) return;
 
-	http_get(TIMEAPI_URL, "", http_callback_time);
+	http_get(TIMEZONEDB_URL, "", http_callback_time);
 }
 
 // Warning: The alarm timer won't work at the end of the week (sunday night at 23:59)

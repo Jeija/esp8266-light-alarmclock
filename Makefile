@@ -2,12 +2,13 @@
 PORT			?= /dev/ttyUSB0
 BAUD			:= 921600
 
-# WiFi Settings
+# WiFi Settings and TimezoneDB API key
 # Do NOT modify these placeholders, but include your configuration
 # in your make commandline:
-# make WIFI_SSID="YOURSSID" WIFI_PASS="YOURPASS"
+# make WIFI_SSID="YOURSSID" WIFI_PASS="YOURPASS" TIMEZONEDB_KEY="YOURKEY"
 WIFI_SSID		:= placeholder
 WIFI_PASS		:= placeholder
+TIMEZONEDB_KEY		:= placeholder
 
 # Directory structure
 BUILDDIR		:= build
@@ -63,7 +64,7 @@ $(LIBESPHTTPD):
 	SDK_BASE=$(SDK_DIR) USE_OPENSDK=yes $(MAKE) -C $(LIBESPHTTPD_DIR)
 			
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(INCDIRS) $(CFLAGS) -D WIFI_SSID=\"$(WIFI_SSID)\" -D WIFI_PASS=\"$(WIFI_PASS)\" -MMD -MP -c $< -o $@
+	$(CC) $(INCDIRS) $(CFLAGS) -D WIFI_SSID=\"$(WIFI_SSID)\" -D WIFI_PASS=\"$(WIFI_PASS)\" -D TIMEZONEDB_KEY=\"$(TIMEZONEDB_KEY)\" -MMD -MP -c $< -o $@
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
