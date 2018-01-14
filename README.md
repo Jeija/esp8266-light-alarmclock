@@ -4,8 +4,9 @@ Being woken up by a loud alarm sound, trying to find the dismiss button on your 
 ## Hardware
 ![Hardware in a box](hardware/box.png?raw=true)
 ![PCB inside box](hardware/pcb.png?raw=true)
+![Schematic](hardware/schematic.png?raw=true)
 
-The alarm clock is based on the ESP-01 WiFi module with the ESP8266 WiFi chip. GPIO2 of the ESP-01 is simply connected to some transistors that control an LED Strip (could be any other load). A capacitor makes the transition between different light intensities (achieved using PWM) smooth. The 3.3V for the ESP-01 can be provided by an LF33CV or LF33CDT. The default 512KB flash chip is enough for storing all the software and alarm times.
+The alarm clock is based on the ESP-01 WiFi module with the ESP8266 WiFi chip. GPIO2 of the ESP-01 is simply connected to a transistor that controls an LED stripe (could be any other load). A simple RC low pass filter makes the transition between different light intensities (achieved using PWM) smooth, the capacitor and resistor values in the above diagram really depend on how smooth you want these transitions to be and on your type of MOSFET. The 3.3V for the ESP-01 can be provided by any 3.3V LDO, such as the LF33CV or LF33CDT. The default 512KB flash chip is enough for storing all the software and alarm times.
 
 ## Software
 ![Set brightness page](screenshots/setbrightness.png?raw=true)
